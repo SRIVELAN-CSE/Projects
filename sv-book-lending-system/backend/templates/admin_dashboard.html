@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - SV Book Lending System</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1 class="mt-5">Admin Dashboard</h1>
+        <div class="mt-4">
+            <h2>Manage Books</h2>
+            <form action="{{ url_for('admin.add_book') }}" method="POST">
+                <div class="form-group">
+                    <label for="bookTitle">Book Title</label>
+                    <input type="text" class="form-control" id="bookTitle" name="title" required>
+                </div>
+                <div class="form-group">
+                    <label for="bookAuthor">Author</label>
+                    <input type="text" class="form-control" id="bookAuthor" name="author" required>
+                </div>
+                <div class="form-group">
+                    <label for="bookISBN">ISBN</label>
+                    <input type="text" class="form-control" id="bookISBN" name="isbn" required>
+                </div>
+                <button type="submit" class="btn btn-primary">Add Book</button>
+            </form>
+        </div>
+        <div class="mt-4">
+            <h2>Current Books</h2>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Title</th>
+                        <th>Author</th>
+                        <th>ISBN</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for book in books %}
+                    <tr>
+                        <td>{{ book.title }}</td>
+                        <td>{{ book.author }}</td>
+                        <td>{{ book.isbn }}</td>
+                        <td>
+                            <form action="{{ url_for('admin.remove_book', book_id=book.id) }}" method="POST" style="display:inline;">
+                                <button type="submit" class="btn btn-danger">Remove</button>
+                            </form>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <div class="mt-4">
+            <h2>Transaction History</h2>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>User</th>
+                        <th>Book</th>
+                        <th>Date Borrowed</th>
+                        <th>Date Returned</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for transaction in transactions %}
+                    <tr>
+                        <td>{{ transaction.user }}</td>
+                        <td>{{ transaction.book }}</td>
+                        <td>{{ transaction.date_borrowed }}</td>
+                        <td>{{ transaction.date_returned }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
